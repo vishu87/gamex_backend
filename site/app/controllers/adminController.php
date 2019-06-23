@@ -547,7 +547,7 @@ class adminController extends BaseController {
 			}
 		}
 
-		$transactions = Transaction::select('transactions.*','members.name')->leftJoin('members','transactions.distributor_id','=','members.id')->where('transactions.distributor_id',$id)->where('admin_id','!=',0)->orderBy('id','DESC')->get();
+		$transactions = Transaction::select('transactions.*','members.name')->leftJoin('members','transactions.distributor_id','=','members.id')->where('transactions.distributor_id',$id)->where('transactions.admin_id','!=',0)->orderBy('id','DESC')->get();
 		
 		
 		$this->layout->sidebar = View::make('admin.sidebar',["page_id"=>9]);
