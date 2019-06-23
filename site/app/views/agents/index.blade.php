@@ -74,7 +74,7 @@
 				<td>	
 					<a type="button" href="{{url('admin/transferhistoryuser/'.$data->id)}}" class="btn btn-block yellow" target="_blank">Transfer History</a>
 					
-					<a type="button" href="{{url('check-balance-main?uid='.base64_encode($data->id))}}" class="btn btn-block blue" target="_blank">Gaming</a>
+					<a type="button" href="{{url('admin/bettinghistoryuser/'.$data->id)}}" class="btn btn-block blue" target="_blank">Gaming</a>
 				</td>
 			</tr>
 			@endforeach

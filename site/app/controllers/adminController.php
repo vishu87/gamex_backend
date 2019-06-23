@@ -558,7 +558,7 @@ class adminController extends BaseController {
 	function bettinghistoryuser($id){
 		$user = Ruser::find($id);
 		
-		$betting = DB::table('bet_transaction_new')->select('bet_transaction_new.*','game_numbers.number1','game_numbers.number2')->join("game_numbers","game_numbers.game_number","=","bet_transaction_new.game_id")->where('user_id',$id)->orderBy('created_timestamp','DESC')->get();
+		$betting = DB::table('bet_transaction')->select('bet_transaction.*')->where('user_id',$id)->orderBy('created_timestamp','DESC')->get();
 		
 		$this->layout->sidebar = View::make('admin.sidebar',["page_id"=>2]);
 		$this->layout->main = View::make('admin.bettinghistoryuser',["user"=>$user,"betting"=>$betting ]);
