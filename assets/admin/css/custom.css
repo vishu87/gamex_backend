@@ -1,0 +1,18 @@
+table.small_in .tablesorter-filter{
+  width: 30px !important;
+}
+table.small_in input{
+  width: 40px !important;
+}
+textarea.form-control{
+	height: 100px;
+}
+.required{
+	color: #F00;
+}
+.error{
+	color: #F42B2B;
+}
+.tablesorter-headerRow{
+	border-top: 2px solid #ddd;
+}
