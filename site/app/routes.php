@@ -20,7 +20,6 @@ Route::group(array("prefix"=>'admin',"before"=>['auth','admin']),function(){
 	
 	Route::get('/', 'adminController@adminPage');
 	Route::get('/stats', 'adminController@stats');
-	Route::get('/stats-new', 'adminController@statsNew');
 
 	Route::get('/addDis', 'adminController@addDis');
 	Route::get('/transferhistory', 'adminController@transferhistory');

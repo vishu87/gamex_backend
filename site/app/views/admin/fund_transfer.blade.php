@@ -13,16 +13,16 @@
 			</div>
 		@endif
 		<!--- student form start -->
-
+		@if(Auth::user()->priv == 1)
 		<div class="portlet box blue">
 			<div class="portlet-title">
 				<div class="caption">
-					Fund Transfer
+					Fund Transfer @if(Auth::user()->priv==1) Distributors @endif
 				</div>
 			</div>
 			<div class="portlet-body form">
 				<div class="form-body">
-					{{Form::open(array("url"=>'admin/makepaymentUser',"method"=>'post',"class"=>'form-group',"files"=>'true'))}}
+					{{Form::open(array("url"=>'transferMoney',"method"=>'post',"class"=>'form-group',"files"=>'true'))}}
 						<!--- my form start -->
 							<div class="row">
 								
@@ -51,8 +51,9 @@
 					{{Form::close()}}
 			</div>
 		</div>
+		@endif
 
-		@if(false)
+		@if(Auth::user()->priv != 1)
 		<div class="portlet box blue">
 			<div class="portlet-title">
 				<div class="caption">
@@ -92,7 +93,7 @@
 		</div>
 		@endif
 
-		@if(false)
+		@if(Auth::user()->priv != 1)
 		<div class="portlet box blue">
 			<div class="portlet-title">
 				<div class="caption">
@@ -125,7 +126,7 @@
 		</div>
 		@endif
 
-		@if(false)
+		@if(Auth::user()->priv == 1)
 			<div class="portlet box blue">
 				<div class="portlet-title">
 					<div class="caption">

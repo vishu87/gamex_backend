@@ -80,7 +80,7 @@
           </a>
         </li>  
 
-        @if(Auth::User()->priv==-1)
+        @if(Auth::User()->priv == 1)
           <li <?php if($page_id == 8): ?> class="active" <?php endif; ?> >
             <a href="{{url('admin/stats')}}">
                <i class="fa fa-cubes"></i>
@@ -89,14 +89,6 @@
           </li>
         @endif
 
-        @if(Auth::User()->priv==1)
-          <li <?php if($page_id == 8): ?> class="active" <?php endif; ?> >
-            <a href="{{url('admin/stats-new')}}">
-               <i class="fa fa-cubes"></i>
-               <span class="title">Stats</span>
-            </a>
-          </li>
-        @endif
 
         @if(Auth::User()->priv==1)
           <li <?php if($page_id == 11): ?> class="active" <?php endif; ?> >

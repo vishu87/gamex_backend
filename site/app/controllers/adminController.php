@@ -280,49 +280,46 @@ class adminController extends BaseController {
 //----------fund Transfer-------
 	function fundtransfer(){
 
-		// if(Auth::user()->priv==1){
+		if(Auth::user()->priv==1){
 			
-		// 	$pay_to_get = User::where('priv',3)->where('admin_id',Auth::id())->get();
-		// 	$pay_to = array();
-		// 	foreach ($pay_to_get as $u) {
-		// 		$pay_to[$u->id] = $u->name.' ('.$u->username.')';
-		// 	}
+			$pay_to_get = User::where('priv',3)->where('admin_id',Auth::id())->get();
+			$pay_to = array();
+			foreach ($pay_to_get as $u) {
+				$pay_to[$u->id] = $u->name.' ('.$u->username.')';
+			}
 
-		// 	$pay_to_agent_get = User::where('priv',2)->where('admin_id',Auth::id())->get();
-		// 	$pay_to_agent = array();
-		// 	foreach ($pay_to_agent_get as $u) {
-		// 		$pay_to_agent[$u->id] = $u->name.' ('.$u->username.')';
-		// 	}
+			$pay_to_agent_get = User::where('priv',2)->where('admin_id',Auth::id())->get();
+			$pay_to_agent = array();
+			foreach ($pay_to_agent_get as $u) {
+				$pay_to_agent[$u->id] = $u->name.' ('.$u->username.')';
+			}
 
-		// }else if(Auth::user()->priv==3){
+		} else if(Auth::user()->priv==3){
 
-		// 	$pay_to_get = User::where('priv',2)->where('distributor_id',Auth::id())->get();
-		// 	$pay_to = array();
-		// 	foreach ($pay_to_get as $u) {
-		// 		$pay_to[$u->id] = $u->name.' ('.$u->username.')';
-		// 	}
+			$pay_to_get = User::where('priv',2)->where('distributor_id',Auth::id())->get();
+			$pay_to = array();
+			foreach ($pay_to_get as $u) {
+				$pay_to[$u->id] = $u->name.' ('.$u->username.')';
+			}
 		
-		// } else {
-		// 	$pay_to_get = Ruser::where('agent_id',Auth::id())->get();
-		// 	$pay_to = array();
-		// 	foreach ($pay_to_get as $u) {
-		// 		$pay_to[$u->id] = $u->name.' ('.$u->user_name.')';
-		// 	}
-		// }
-
-		$pay_to_get = DB::table("user")->where("type",1)->get();
-		$pay_to = array();
-		foreach ($pay_to_get as $u) {
-			$pay_to[$u->id] = $u->name.' ('.$u->user_name.')';
+		} else {
+			$pay_to_get = Ruser::where('agent_id',Auth::id())->get();
+			$pay_to = array();
+			foreach ($pay_to_get as $u) {
+				$pay_to[$u->id] = $u->name.' ('.$u->user_name.')';
+			}
 		}
 
 		$this->layout->sidebar = View::make('admin.sidebar',["page_id"=>3]);
-		// if(Auth::user()->priv==1){
-		// 	$this->layout->main = View::make('admin.fund_transfer',["pay_to"=>$pay_to, "pay_to_agent"=>$pay_to_agent]);
-		// } else {
-		// 	$this->layout->main = View::make('admin.fund_transfer',["pay_to"=>$pay_to]);
-		// }
-		$this->layout->main = View::make('admin.fund_transfer',["pay_to"=>$pay_to]);
+		
+		if(Auth::user()->priv==1){
+			$this->layout->main = View::make('admin.fund_transfer',["pay_to"=>$pay_to, "pay_to_agent"=>$pay_to_agent]);
+		} else {
+			$this->layout->main = View::make('admin.fund_transfer',["pay_to"=>$pay_to]);
+		}
+
+		// $this->layout->main = View::make('admin.fund_transfer',["pay_to"=>$pay_to]);
+
 	    $this->layout->page_id = 3;
 	}
 
@@ -358,24 +355,24 @@ class adminController extends BaseController {
 		$Validator=Validator::make($cre,$rules);
 		if($Validator->passes() && Input::get("amount") > 0){
 			if(Auth::user()->priv==1  ){
+					//TRANSFER MONEY TO DISTRIBUTOR
+				$transaction = new Transaction;
+				$transaction->admin_id=Auth::user()->id;
+				$transaction->distributor_id=Input::get('payee');
+				$transaction->remark= Input::get('remark');
+				$transaction->amount= Input::get('amount');
+				$transaction->save();
+				$agent = User::find(Input::get('payee'));
+				$agent->balance = $agent->balance + Input::get('amount');
+				$agent->save();
+				return Redirect::Back()->with('success','Fund Transfered Successfully');
+
+			} else if(Auth::user()->priv == 3  ){
 					//TRANSFER MONEY TO AGENT
-					$transaction = new Transaction;
-					$transaction->admin_id=Auth::user()->id;
-					$transaction->distributor_id=Input::get('payee');
-					$transaction->remark= Input::get('remark');
-					$transaction->amount= Input::get('amount');
-					$transaction->save();
-					$agent = User::find(Input::get('payee'));
-					$agent->balance = $agent->balance + Input::get('amount');
-					$agent->save();
-					return Redirect::Back()->with('success','Fund Transfered Successfully');
-			}else if(Auth::user()->priv == 3  ){
-					//TRANSFER MONEY TO AGENT
-					$dis = User::find(Auth::id());
+				
+				$dis = User::find(Auth::id());
 
-					if($dis->balance >= Input::get('amount') && Input::get('amount') > 0){
-
-
+				if($dis->balance >= Input::get('amount') && Input::get('amount') > 0){
 					$transaction = new Transaction;
 					$transaction->distributor_id=Auth::user()->id;
 					$transaction->agent_id = Input::get('payee');
@@ -466,16 +463,16 @@ class adminController extends BaseController {
 		if($Validator->passes() && Input::get("amount") > 0){
 			if(Auth::user()->priv==1  ){
 					//TRANSFER MONEY TO AGENT
-					$transaction = new Transaction;
-					$transaction->admin_id=Auth::user()->id;
-					$transaction->agent_id=Input::get('payee');
-					$transaction->remark= Input::get('remark');
-					$transaction->amount= Input::get('amount');
-					$transaction->save();
-					$agent = User::find(Input::get('payee'));
-					$agent->balance = $agent->balance + Input::get('amount');
-					$agent->save();
-					return Redirect::Back()->with('success','Fund Transfered Successfully');
+				$transaction = new Transaction;
+				$transaction->admin_id=Auth::user()->id;
+				$transaction->agent_id=Input::get('payee');
+				$transaction->remark= Input::get('remark');
+				$transaction->amount= Input::get('amount');
+				$transaction->save();
+				$agent = User::find(Input::get('payee'));
+				$agent->balance = $agent->balance + Input::get('amount');
+				$agent->save();
+				return Redirect::Back()->with('success','Fund Transfered Successfully');
 			}
 			
 		}
@@ -655,75 +652,75 @@ class adminController extends BaseController {
 	}
 
 
-	function makepaymentUser(){
-		$cre=[
-			"user_id"=>Input::get('payee'),
-			"amount"=>Input::get('amount')
-		];
-		$rules=[
-			"user_id"=>'required',
-			"amount"=>'required|regex:([0-9])'
-		];
-		$Validator=Validator::make($cre,$rules);
-		if($Validator->passes()){
-			$transaction = new Transaction;
-			$transaction->agent_id=0;
-			$transaction->user_id=Input::get('payee');
-			$transaction->amount= Input::get('amount');
-			$transaction->remark= Input::get('remark');
-			if($transaction->save()){
+	// function makepaymentUser(){
+	// 	$cre=[
+	// 		"user_id"=>Input::get('payee'),
+	// 		"amount"=>Input::get('amount')
+	// 	];
+	// 	$rules=[
+	// 		"user_id"=>'required',
+	// 		"amount"=>'required|regex:([0-9])'
+	// 	];
+	// 	$Validator=Validator::make($cre,$rules);
+	// 	if($Validator->passes()){
+	// 		$transaction = new Transaction;
+	// 		$transaction->agent_id=0;
+	// 		$transaction->user_id=Input::get('payee');
+	// 		$transaction->amount= Input::get('amount');
+	// 		$transaction->remark= Input::get('remark');
+	// 		if($transaction->save()){
 
-				$count_user = UserBalance::where('user_id',Input::get('payee'))->count();
+	// 			$count_user = UserBalance::where('user_id',Input::get('payee'))->count();
 				
-				if($count_user==0){
-					$user_balance=new UserBalance;
-					$user_balance->user_id=Input::get('payee');
-					$user_balance->balance=Input::get('amount');
-					if($user_balance->save()){
-						$flag = true;
-					}
-				}
-				else{
-					$balance_prev=DB::table('user_balance')->where('user_id',Input::get('payee'))->first();
-					$total_balance = $balance_prev->balance + Input::get('amount');
-					if(DB::table('user_balance')->where('user_id',Input::get('payee'))->update(array("balance"=>$total_balance))){
-						$flag = true;
-					}
-				}
+	// 			if($count_user==0){
+	// 				$user_balance=new UserBalance;
+	// 				$user_balance->user_id=Input::get('payee');
+	// 				$user_balance->balance=Input::get('amount');
+	// 				if($user_balance->save()){
+	// 					$flag = true;
+	// 				}
+	// 			}
+	// 			else{
+	// 				$balance_prev=DB::table('user_balance')->where('user_id',Input::get('payee'))->first();
+	// 				$total_balance = $balance_prev->balance + Input::get('amount');
+	// 				if(DB::table('user_balance')->where('user_id',Input::get('payee'))->update(array("balance"=>$total_balance))){
+	// 					$flag = true;
+	// 				}
+	// 			}
 
-				return Redirect::Back()->with('success','Fund Transfered Successfully');
+	// 			return Redirect::Back()->with('success','Fund Transfered Successfully');
 
-			} else {
+	// 		} else {
 				
-				return Redirect::Back()->with('failure','Fund Transfered Failed');
-			}
-		}
-		else{
-			return Redirect::Back()->withErrors($Validator)->withInput()->with('failure','Amount should be more than 0');
-		}
-	}
-	function makepayment(){
-		$cre=[
-			"agent_id"=>Input::get('agent_id'),
-			"amount"=>Input::get('amount')
-		];
-		$rules=[
-			"agent_id"=>'required',
-			"amount"=>'required|regex:([0-9])'
-		];
-		$Validator=Validator::make($cre,$rules);
-		if($Validator->passes() && Input::get("amount") > 0){
-			if(Auth::user()->priv==1  ){
-					//TRANSFER MONEY TO AGENT
-					DB::table('amount_given')->insert(["agent_id"=>Input::get('agent_id'), "amount"=>Input::get('amount'), "remark"=>Input::get('remark')]);
-					return Redirect::Back()->with('success','Fund Transfered Successfully');
-			}
+	// 			return Redirect::Back()->with('failure','Fund Transfered Failed');
+	// 		}
+	// 	}
+	// 	else{
+	// 		return Redirect::Back()->withErrors($Validator)->withInput()->with('failure','Amount should be more than 0');
+	// 	}
+	// }
+	// function makepayment(){
+	// 	$cre=[
+	// 		"agent_id"=>Input::get('agent_id'),
+	// 		"amount"=>Input::get('amount')
+	// 	];
+	// 	$rules=[
+	// 		"agent_id"=>'required',
+	// 		"amount"=>'required|regex:([0-9])'
+	// 	];
+	// 	$Validator=Validator::make($cre,$rules);
+	// 	if($Validator->passes() && Input::get("amount") > 0){
+	// 		if(Auth::user()->priv==1  ){
+	// 				//TRANSFER MONEY TO AGENT
+	// 				DB::table('amount_given')->insert(["agent_id"=>Input::get('agent_id'), "amount"=>Input::get('amount'), "remark"=>Input::get('remark')]);
+	// 				return Redirect::Back()->with('success','Fund Transfered Successfully');
+	// 		}
 			
-		}
-		else{
-			return Redirect::Back()->withErrors($Validator)->withInput()->with('failure','Amount should be more than 0');
-		}
-	}
+	// 	}
+	// 	else{
+	// 		return Redirect::Back()->withErrors($Validator)->withInput()->with('failure','Amount should be more than 0');
+	// 	}
+	// }
 
 	public function checkBalance($user_id){
 
