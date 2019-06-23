@@ -28,7 +28,7 @@
 
 <body class="login">
   <div class="logo">
-    <img src="{{url('assets/admin/img/logo_dev.png')}}" style="width: 300px; height: auto">
+    <img src="{{url('assets/admin/img/logo.png')}}" style="width: 500px; height: auto">
   </div>
 
 <div class="content">
