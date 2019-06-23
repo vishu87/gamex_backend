@@ -37,11 +37,6 @@
 									<span class="error">{{$errors->first('agent')}}</span>									
 								</div>
 								<div class="col-md-3">
-									{{Form::label('BHAV')}}
-									{{Form::text("bhav",'',["class"=>"form-control","placeholder"=>"8/9"])}}
-									<span class="error">{{$errors->first('bhav')}}</span>									
-								</div>
-								<div class="col-md-3">
 									{{Form::label('Email')}}
 									{{Form::text("email",'',["class"=>"form-control"])}}
 									<span class="error">{{$errors->first('email')}}</span>									
@@ -64,7 +59,6 @@
 			<tr>
 				<th>SN</th>
 				<th>User Name</th>
-				<th>Bhav</th>
 				<th>Balance</th>
 				<th>#</th>
 				
@@ -76,17 +70,11 @@
 			<tr>
 				<td>{{$count++}}</td>
 				<td>{{$data->user_name}}</td>
-				<td>{{$data->bhav}}</td>
 				<td>{{$data->balance}}</td>
-				
-
-					<td>
-						
-						
-						<a type="button" href="{{url('admin/transferhistoryuser/'.$data->id)}}" class="btn btn-block yellow" target="_blank">Transfer History</a>
-						
-							<a type="button" href="{{url('check-balance-main?uid='.base64_encode($data->id))}}" class="btn btn-block blue" target="_blank">Gaming</a>
-						
+				<td>	
+					<a type="button" href="{{url('admin/transferhistoryuser/'.$data->id)}}" class="btn btn-block yellow" target="_blank">Transfer History</a>
+					
+					<a type="button" href="{{url('check-balance-main?uid='.base64_encode($data->id))}}" class="btn btn-block blue" target="_blank">Gaming</a>
 				</td>
 			</tr>
 			@endforeach

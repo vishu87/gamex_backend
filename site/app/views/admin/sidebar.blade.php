@@ -8,20 +8,20 @@
 
         </li>
         @if(Auth::User()->priv==1)
-          <!-- <li <?php if($page_id == 9): ?> class="active" <?php endif; ?> >
+          <li <?php if($page_id == 9): ?> class="active" <?php endif; ?> >
             <a href="{{url('admin/addDis')}}">
                <i class="fa fa-cubes"></i>
                <span class="title">Distributors</span>
             </a>
-          </li> -->
+          </li>
         @endif
         @if(Auth::User()->priv==1)
-          <!-- <li <?php if($page_id == 1): ?> class="active" <?php endif; ?> >
+          <li <?php if($page_id == 1): ?> class="active" <?php endif; ?> >
             <a href="{{url('admin')}}">
                <i class="fa fa-cubes"></i>
                <span class="title">Agents</span>
             </a>
-          </li> -->
+          </li>
         @endif
         
            <li <?php if($page_id == 2): ?> class="active" <?php endif; ?> >

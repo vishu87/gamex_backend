@@ -22,13 +22,11 @@ class agentController extends BaseController {
 		$cre = [
 			"name"=>Input::get('name'),
 			"username"=>Input::get('username'),
-			"agent"=>Input::get('agent'),
-			"bhav"=>Input::get('bhav'),
+			"agent"=>Input::get('agent')
 		];
 		$rules=[
 			"name"=>'required',
 			"agent"=>'required',
-			"bhav"=>'required',
 			"username"=>'required|unique:user,user_name'
 		];
 		$password = "tgr123";
@@ -38,7 +36,6 @@ class agentController extends BaseController {
 			$user->user_name = Input::get('username');
 			$user->name = Input::get('name');
 			$user->agent_id = Input::get('agent');
-			$user->bhav = Input::get('bhav');
 			$user->email = Input::get('email');
 			$user->password = md5($password);
 			$user->status = 1;

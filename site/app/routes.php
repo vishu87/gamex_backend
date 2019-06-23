@@ -2,7 +2,7 @@
 
 /* Not Authentication routes */
 
-Route::get('/', 'adminController@home');
+Route::get('/', 'adminController@indexpage');
 Route::get('/login', 'adminController@indexpage');
 Route::post('/login', 'adminController@login');
 
