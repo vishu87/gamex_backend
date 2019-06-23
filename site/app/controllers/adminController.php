@@ -807,7 +807,7 @@ class adminController extends BaseController {
 
 	public function clearRedis(){
 		$redis = Redis::connection();
-		if($redis->FLUSHALL(){
+		if($redis->FLUSHALL()){
 			return "done flush all";
 		} else {
 			return "Not connected";
