@@ -796,10 +796,19 @@ class adminController extends BaseController {
 		return $users;
 	}
 
-	public function checkRedis(){
+	public function checkRedis($user_id){
 		$redis = Redis::connection();
-		if($redis->GET('balance_3') ){
+		if($redis->GET('balance_'.$user_id) ){
 			return $redis->GET('balance_3');
+		} else {
+			return "Not connected";
+		}
+	}
+
+	public function clearRedis(){
+		$redis = Redis::connection();
+		if($redis->FLUSHALL(){
+			return "done flush all";
 		} else {
 			return "Not connected";
 		}

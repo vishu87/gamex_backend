@@ -84,4 +84,5 @@ Route::group(array("prefix"=>'agents',"before"=>['auth']),function(){
 
 });
 
-Route::get('/check-redis','adminController@checkRedis');
+Route::get('/check-redis/{user_id}','adminController@checkRedis');
+Route::get('/clear-redis','adminController@clearRedis');
