@@ -46,7 +46,7 @@
         </li>  
         @endif
 
-        @if(Auth::User()->priv==-1)
+        @if(Auth::User()->priv == 1)
         <li <?php if($page_id == 10): ?> class="active" <?php endif; ?> >
           <a href="{{url('admin/alltransferhistory')}}">
             <i class="fa fa-cubes"></i>
@@ -73,13 +73,6 @@
         </li>  
         @endif
 
-        <li <?php if($page_id == 7): ?> class="active" <?php endif; ?> >
-          <a href="{{url('/change-password')}}">
-            <i class="fa fa-cubes"></i>
-            <span class="title">Change Password</span>
-          </a>
-        </li>  
-
         @if(Auth::User()->priv == 1)
           <li <?php if($page_id == 8): ?> class="active" <?php endif; ?> >
             <a href="{{url('admin/stats')}}">
@@ -98,6 +91,13 @@
             </a>
           </li>
         @endif
+
+        <li <?php if($page_id == 7): ?> class="active" <?php endif; ?> >
+          <a href="{{url('/change-password')}}">
+            <i class="fa fa-cubes"></i>
+            <span class="title">Change Password</span>
+          </a>
+        </li>  
 
         <li <?php if($page_id == 5): ?> class="active" <?php endif; ?> >
           <a href="{{url('/logout')}}">

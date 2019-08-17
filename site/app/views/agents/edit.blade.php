@@ -2,7 +2,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<!--- student form start -->
-		<div class="portlet box blue">
+		<div class="portlet box blue hidden">
 			<div class="portlet-title">
 				<div class="caption">
 					Edit User
@@ -47,6 +47,10 @@
 	</div>
 </div>
 
+<div>
+	<a href="{{url('agents')}}" class="btn default">Go Back</a>
+</div>
+<hr>
 
 <div class="row">
 	<div class="col-md-12">

@@ -795,7 +795,7 @@ class adminController extends BaseController {
 
 	public function checkRedis($key){
 		$redis = Redis::connection();
-		if($redis->GET($key) ){
+		if( $redis->GET($key) ){
 			return $redis->GET($key);
 		} else {
 			return "Not connected";

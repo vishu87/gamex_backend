@@ -75,6 +75,8 @@
 					<a type="button" href="{{url('admin/transferhistoryuser/'.$data->id)}}" class="btn btn-block yellow" target="_blank">Transfer History</a>
 					
 					<a type="button" href="{{url('admin/bettinghistoryuser/'.$data->id)}}" class="btn btn-block blue" target="_blank">Gaming</a>
+
+					<a type="button" href="{{url('agents/edit_user/'.$data->id)}}" class="btn btn-block green">Update Password</a>
 				</td>
 			</tr>
 			@endforeach
